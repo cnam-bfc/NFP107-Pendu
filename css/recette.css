@@ -1,0 +1,371 @@
+/*Mettre la page en colonne + couleur de fond*/
+
+.main_div {
+    background-color: rgb(207, 207, 205);
+}
+
+#recette_main {
+    display: flex;
+    flex-direction: column;
+    margin: 30px 170px 30px 170px;
+    background-color: white;
+    border-radius: 30px;
+    padding: 30px 60px 30px 60px;
+}
+
+#recette_public input {
+    width: 40px;
+    height: auto;
+    margin-left: 7px;
+}
+
+.del_buttom input {
+    width: 25px !important;
+    height: auto;
+    margin-right: 2px;
+}
+
+/* allignement de tout sauf note et like*/
+
+#recette_desc,
+#recette_img,
+#recette_ingrediants,
+#recette_etapes,
+#recette_ustensiles {
+    margin: auto;
+}
+
+
+/* Partie titre et description */
+
+#recette_title {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+#recette_title h1 {
+    text-shadow: 1px 1px 1px black;
+    border-bottom: 2px solid grey;
+    margin-right: 10px;
+    margin-left: 10px;
+}
+
+#recette_title input {
+    width: 30px;
+    height: auto;
+}
+
+
+#recette_desc {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+#recette_desc h3 {
+    font-weight: bold;
+    padding-right: 10px;
+}
+
+#recette_desc input {
+    width: 30px;
+    height: auto;
+}
+
+/*Partie note et like */
+#recette_note_like {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    margin: auto;
+    /*width: 100%;*/
+    border: 1px solid rgb(221, 167, 19);
+    border-radius: 10px;
+    margin-top: 30px;
+}
+
+#recette_note_avg {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    flex: 1;
+}
+
+#recette_like_dislike {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+}
+
+#recette_note,
+#recette_avg,
+#recette_like,
+#recette_dislike {
+    margin-left: 40px;
+    margin-right: 40px;
+}
+
+#like_buttom {
+    width: 30px;
+    height: auto;
+}
+
+#dislike_buttom {
+    width: 30px;
+    height: auto;
+}
+
+#del_comment_buttom {
+    width: 30px;
+    height: auto;
+}
+
+/* Informations supplémentaires */
+
+#recette_more_informations {
+    display: flex;
+    flex-direction: row;
+    margin: auto;
+    justify-content: space-around;
+    border: 1px solid rgb(218, 116, 1);
+    border-radius: 10px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+#recette_more_informations p {
+    margin-left: 10px;
+    margin-right: 10px;
+    text-align: center;
+}
+
+#recette_info_container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin: auto;
+}
+
+#recette_info_container input {
+    width: 30px;
+    height: auto;
+    margin-left: 5px;
+}
+
+/*Partie image */
+
+
+#recette_img img {
+    width: 300px;
+    height: auto;
+}
+
+#recette_img_container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin: auto;
+}
+
+#recette_img_container input {
+    width: 30px;
+    height: auto;
+    margin-left: 5px;
+}
+
+
+/*Partie ingrédiants et étapes trouver une autre solution que les listes à puce pour rangement 
+car c'est de la merde, éventuellement refaire un systeme de boite CQFD. Ok j'ai trouvé WOULA mais en faite c'est mieux
+sans centrer donc j'ai cherché pour rien*/
+
+/*#recette_ingrediants ul, #recette_etapes ol
+{
+    display: inline-block;
+    text-align: center;
+}*/
+
+#recette_ingrediants,
+#recette_etapes,
+#recette_ustensiles {
+    border: 2px solid black;
+    width: 600px;
+    border-radius: 10px;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    padding-right: 10px;
+    padding-left: 10px;
+    text-align: justify;
+}
+
+#recette_ingrediants,
+#recette_ustensiles {
+    width: 400px !important;
+}
+
+#recette_ingrediants h2,
+#recette_etapes h2,
+#recette_ustensiles h2 {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.recette_add {
+    text-align: right;
+}
+
+.recette_add input {
+    width: 25px;
+    height: auto;
+    margin-bottom: 5px;
+}
+
+.recette_ingredient_etape_container {
+    display: flex;
+    flex-direction: row;
+}
+
+.recette_ingredient_etape_container em {
+    font-weight: bold;
+}
+
+.recette_ingredient_etape_container_num {
+    width: 40px;
+    text-align: center;
+}
+
+.recette_ingredient_etape_container_desc {
+    flex: 1;
+}
+
+.recette_ingredient_etape_container_buttom {
+    width: 70px;
+    display: flex;
+    flex-direction: row;
+    margin-left: 30px;
+    align-items: center;
+}
+
+.recette_ingredient_etape_container input {
+    width: 25px;
+    height: 25px;
+    margin: auto;
+}
+
+#recette_author {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+/*Espace commentaire, Bon pour le moment je l'intègre à la page mais il est
+fort probable que ça ne soit plus le cas à l'avenir */
+
+#recette_comment_title {
+    text-align: center;
+}
+
+#recette_container_comment_main {
+    max-height: 800px;
+    overflow-y: auto;
+}
+
+#recette_container_comment {
+    border: 3px solid black;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
+
+#recette_container_name_like {
+    display: flex;
+    flex-direction: row;
+    border-bottom: 3px solid black;
+    align-items: center;
+}
+
+#recette_container_name_like em {
+    flex: 1;
+    text-indent: 10px;
+}
+
+#recette_container_name_like p {
+    width: 100px;
+}
+
+#recette_container_name_like form {
+    width: 50px;
+}
+
+#recette_comment {
+    text-indent: 50px;
+    white-space: normal;
+    word-wrap: break-word;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+/*Espace création de commentaire*/
+
+#recette_form_comment {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 30px;
+    ;
+}
+
+#recette_create_comment {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#recette_create_comment label {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+#recette_create_comment_text {
+    margin-top: 3px;
+    padding: 10px;
+    white-space: normal;
+    word-wrap: break-word;
+    text-indent: 10px;
+}
+
+#recette_comment_buttom_div input {
+    margin-top: 5px;
+    height: 25px;
+    border-radius: 3px;
+}
+
+@media all and (max-width: 1100px){
+
+    #recette_main{
+        margin-right: 50px;
+        margin-left: 50px;
+        padding-left: 25px;
+        padding-right: 25px
+    }
+
+}
+
+@media all and (max-width: 800px){
+
+    #recette_main{  
+        margin-right: 0;
+        margin-left: 0;
+    }
+
+    #recette_etapes{
+        width: 400px;
+    }
+
+    #recette_create_comment_text{
+        width: 400px;
+    }
+}

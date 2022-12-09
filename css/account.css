@@ -1,0 +1,118 @@
+.main_div {
+    background: rgb(207, 207, 205);
+}
+
+#account_main_div {
+    display: flex;
+    flex-direction: column;
+    margin: 30px 170px 0 170px;
+    align-items: center;
+    margin: auto;
+}
+
+#account_main_div h1 {
+    text-align: center;
+}
+
+#account_container {
+    border: 2px solid rgb(26, 25, 25);
+    display: flex;
+    flex-direction: column;
+    /*padding-left: 70px;
+    padding-right: 70px;*/
+    max-width: 600px;
+    margin: auto;
+    padding: 5px 30px 5px 30px;
+    background: white;
+    border-radius: 5px;
+}
+
+#account_main_div h2 {
+    border-bottom: 1px solid grey;
+    font-weight: bold;
+}
+
+#account_info {
+    display: flex;
+    flex-direction: row;
+}
+
+#account_info2 {
+    font-weight: bold;
+    text-align: right;
+    flex: 1;
+}
+
+#account_info3 {
+    text-align: left;
+    flex: 1;
+}
+
+#account_info p {
+    border-bottom: 1px dashed grey;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+#account_delete {
+    text-align: right;
+    margin-bottom: 5px;
+    text-decoration: none;
+    color: rgb(190, 43, 43);
+    padding: 1px;
+}
+
+/*Mes parties*/
+
+#account_partie {
+    border: 2px solid rgb(26, 25, 25);
+    display: flex;
+    flex-direction: column;
+    max-width: 600px;
+    margin: 20px auto auto auto;
+    padding: 5px 30px 5px 30px;
+    background: white;
+    border-radius: 5px;
+    text-align: center;
+    max-height: 500px;
+    overflow-y: auto;
+}
+
+#account_partie_create a {
+    color: black;
+    text-decoration: none;
+}
+
+#account_partie_container_1 {
+    border: 1px solid black;
+    border-radius: 7px;
+    display: flex;
+    flex-direction: column;
+    padding: 5px;
+    margin: 20px auto auto auto;
+    height: 250px;
+    width: 325px;
+    justify-content: space-between;
+}
+
+#account_partie_container_2 {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+}
+
+#account_partie_container_1 p {
+    text-align: justify;
+    overflow-y: auto;
+}
+
+#account_partie_link {
+    text-decoration: none;
+    color: black;
+}
+
+#account_partie_container_1 img {
+    width: 30px;
+    height: auto;
+}

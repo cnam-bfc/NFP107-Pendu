@@ -3,6 +3,7 @@
 <?php
 if (isset($_SESSION['USER_LOGGED'])) {
     include_once('includes/redirect_backward.php');
+    exit();
 }
 
 if (count($_POST) != 0) {

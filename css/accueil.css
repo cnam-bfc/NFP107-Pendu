@@ -1,0 +1,163 @@
+/* Pour la couleur de fond */
+
+.main_div {
+    background: rgb(207, 207, 205);
+}
+
+/* Banniere */
+
+#accueil_banniere {
+    background-image: url("../img/accueil_flou.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    padding-top: 30px;
+    padding-bottom: 30px;
+    display: flex;
+}
+
+#accueil_banniere video {
+    margin: auto;
+}
+
+
+/* La partie de l'actualité */
+
+#accueil_actualites {
+    background-color: white;
+    border-radius: 50px;
+    margin: 20px 150px 50px 150px;
+    padding: 30px 50px 30px 50px;
+    /*border: 3px solid black;*/
+    display: flex;
+    flex-direction: column;
+}
+
+#accueil_actualites h1 {
+    text-align: center;
+    border-bottom: 3px solid rgba(0, 0, 0, 0.1);
+    margin: auto;
+    padding-left: 35px;
+    padding-right: 35px;
+    margin-bottom: 30px;
+}
+
+#accueil_border_actu {
+    border-left: 1px solid rgba(0, 0, 0, 0.1);
+    padding-left: 20px;
+}
+
+.accueil_title_h2 {
+    margin-top: 30px;
+}
+
+#accueil_actualites p {
+    text-align: justify;
+    text-indent: 15px;
+}
+
+
+/*La partie des top recettes 
+En responsive format petit/mobile ou alors utiliser wrap il faudra mettre les recettes en colonnes */
+
+#top_recettes_title {
+    text-align: center;
+}
+
+#top_recettes_border {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    margin-bottom: 30px;
+}
+
+.top_recettes_border {
+    border: 2px solid rgb(0, 0, 0);
+    box-shadow: 1px 1px 2px rgb(95, 94, 94);
+    /*margin: 30px 40px 30px 40px;*/
+    padding-left: 5px;
+    padding-right: 5px;
+    display: flex;
+    flex-direction: column;
+    height: 300px;
+    width: 400px;
+    background: white;
+    border-radius: 10px;
+    justify-content: space-between;
+}
+
+.top_recettes_border h1 {
+    text-align: center;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+#top_recettes_border a {
+    text-decoration: none;
+    color: black;
+}
+
+.top_recettes_border p {
+    text-indent: 10px;
+    text-align: justify;
+    overflow-y: auto;
+}
+
+#accueil_top_recette_container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding-bottom: 5px;
+}
+
+.top_recettes_border em {
+    text-align: right;
+    padding-right: 10px;
+    margin-left: auto;
+
+}
+
+.top_recettes_border strong {
+    text-align: left;
+    padding-left: 10px;
+    font-weight: bold;
+}
+
+@media all and (max-width: 1300px) {
+    .top_recettes_border {
+        height: 275px;
+        width: 350px;
+    }
+
+    #accueil_actualites {
+        margin-right: 50px;
+        margin-left: 50px;
+    }
+}
+
+@media all and (min-width: 1200px) {
+    #top_recettes_separator {
+        display: none;
+    }
+}
+
+@media all and (max-width: 1200px) {
+    #top_recettes_border {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
+@media all and (max-width: 900px) {
+    #accueil_actualites {
+        margin-right: 0;
+        margin-left: 0;
+    }
+
+    #accueil_banniere video {
+        margin: auto;
+        width: 400px;
+        height: auto;
+    }
+
+}
