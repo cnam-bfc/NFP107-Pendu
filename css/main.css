@@ -16,6 +16,21 @@ body {
     flex: 1 0 auto;
     display: flex;
     flex-direction: column;
+    background-color: rgb(207, 207, 205);
+}
+
+.center_div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: auto;
+    /* border: 2px solid rgb(26, 25, 25);
+    min-width: 300px;
+    min-height: 300px;
+    padding: 5px 30px 5px 30px;
+    background: white;
+    border-radius: 5px; */
 }
 
 footer {

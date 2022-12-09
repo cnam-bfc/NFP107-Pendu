@@ -7,7 +7,7 @@ if (!isset($_SESSION['USER_LOGGED'])) {
 }
 
 try {
-    $sqlQuery = 'SELECT * FROM partie, mot WHERE id_utilisateur = :id_utilisateur AND partie.id_mot = mot.id_mot WHERE date_fin_partie IS NOT NULL ORDER BY date_fin_partie DESC';
+    $sqlQuery = 'SELECT * FROM partie, mot WHERE id_utilisateur = :id_utilisateur AND partie.id_mot = mot.id_mot AND date_fin_partie IS NOT NULL ORDER BY date_fin_partie DESC';
     $sqlStatement = $mysqlClient->prepare($sqlQuery);
     $sqlStatement->execute([
         'id_utilisateur' => $_SESSION['USER_ID']
