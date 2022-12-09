@@ -2,12 +2,11 @@
 
 <?php
 
-if (isset($_POST['fileToUpload']) && !empty($_POST['fileToUpload'])) {
-    $file = $_POST['fileToUpload'];
-    $file = fopen($file, "r"); // Ouverture du fichier en lecture seule
+if (isset($_FILES['fileToUpload']) && !empty($_FILES['fileToUpload'])) {
+    $file = $_FILES['fileToUpload'];
+    $file = fopen($file["tmp_name"], "r"); // Ouverture du fichier en lecture seule
 
     $tabVoyelle = ['a', 'e', 'i', 'o', 'u', 'y']; // Tableau des voyelles
-    $voyelles = "aeiouy";
     $tabLettreAccents = ['à', 'â', 'ä', 'é', 'è', 'ê', 'ë', 'î', 'ï', 'ô', 'ö', 'ù', 'û', 'ü', 'ç']; // Tableau des lettres avec accents
 
     $i = 0;
