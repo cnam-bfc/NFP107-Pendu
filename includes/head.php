@@ -1,6 +1,5 @@
 <meta charset="UTF-8" />
 <!-- Import des feuilles de style -->
-<link rel="stylesheet" href="css/reset.css" />
 <link rel="stylesheet" href="css/font.css" />
 <link rel="stylesheet" href="css/header.css" />
 <link rel="stylesheet" href="css/footer.css" />
