@@ -73,10 +73,10 @@ $result = "";
 // Si nouvelle partie
 if (empty($_SESSION['PARTIE_ID']) || $_SESSION['PARTIE_ID'] != $_GET['id']) {
     try {
-        $sqlQuery = 'SELECT * FROM partie, mot WHERE id_utilisateur = :id_utilisateur AND partie.id_partie = :id_partie AND partie.id_mot = mot.id_mot';
+        $sqlQuery = 'SELECT * FROM partie, mot WHERE id_utilisateur_partie = :id_utilisateur_partie AND partie.id_partie = :id_partie AND partie.id_mot_partie = mot.id_mot';
         $sqlStatement = $mysqlClient->prepare($sqlQuery);
         $sqlStatement->execute([
-            'id_utilisateur' => $_SESSION['USER_ID'],
+            'id_utilisateur_partie' => $_SESSION['USER_ID'],
             'id_partie' => $_GET['id']
         ]);
         $partie = $sqlStatement->fetch();

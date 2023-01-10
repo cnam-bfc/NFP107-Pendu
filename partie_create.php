@@ -68,11 +68,11 @@ if (isset($_POST['difficulte']) && !empty($_POST['difficulte'])) {
 
     //création de la partie
     try {
-        $sqlQuery = 'INSERT INTO partie (date_depart_partie, id_utilisateur, id_mot) VALUES (NOW(), :id_utilisateur, :id_mot)';
+        $sqlQuery = 'INSERT INTO partie (date_depart_partie, id_utilisateur_partie, id_mot_partie) VALUES (NOW(), :id_utilisateur_partie, :id_mot_partie)';
         $sqlStatement = $mysqlClient->prepare($sqlQuery);
         $sqlStatement->execute([
-            'id_utilisateur' => $_SESSION['USER_ID'],
-            'id_mot' => $mot['id_mot']
+            'id_utilisateur_partie' => $_SESSION['USER_ID'],
+            'id_mot_partie' => $mot['id_mot']
         ]);
     } catch (Exception $e) {
         $_SESSION['ERROR_MSG'] = 'Erreur lors de l\'éxécution de la requête SQL:</br>' . $e->getMessage();
@@ -81,7 +81,8 @@ if (isset($_POST['difficulte']) && !empty($_POST['difficulte'])) {
     }
 
     // envoie sur la page partie.php avec l'id de la partie
-    $_SESSION['REDIRECT_URL'] = 'partie.php?id=' . $mysqlClient->lastInsertId();
+    $partieNewId = $mysqlClient->lastInsertId();
+    $_SESSION['REDIRECT_URL'] = 'partie.php?id=' . $partieNewId;
     include_once('includes/redirect.php');
     exit();
 }
