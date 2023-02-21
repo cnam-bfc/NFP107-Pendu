@@ -50,6 +50,7 @@ if (isset($_POST['difficulte']) && !empty($_POST['difficulte'])) {
         try {
             $sqlQuery = 'SELECT * FROM mot WHERE longueur_mot > 7';
             $sqlStatement = $mysqlClient->prepare($sqlQuery);
+            $sqlStatement->execute();
             $tabMot = $sqlStatement->fetchAll();
             if (count($tabMot) == 0) {
                 $_SESSION['ERROR_MSG'] = 'Impossible de trouver un mot de plus de 7 lettres</br>';
