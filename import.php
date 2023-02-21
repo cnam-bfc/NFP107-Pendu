@@ -7,6 +7,12 @@ if (!isset($_SESSION['USER_LOGGED']) || ($_SESSION['USER_LOGIN'] != 'totor' && $
 }
 
 if (isset($_FILES['fileToUpload']) && !empty($_FILES['fileToUpload'])) {
+    if ($_FILES['fileToUpload']['error'] > 0) {
+        $_SESSION['ERROR_MSG'] = 'Erreur lors du transfert du fichier.';
+        include_once('includes/error.php');
+        exit();
+    }
+
     $file = $_FILES['fileToUpload'];
     $file = fopen($file["tmp_name"], "r"); // Ouverture du fichier en lecture seule
 
@@ -22,11 +28,20 @@ if (isset($_FILES['fileToUpload']) && !empty($_FILES['fileToUpload'])) {
 
     while (!feof($file)) { // Tant qu'on est pas à la fin du fichier
         $word = fgets($file); // On lit la ligne courante qui représente un mot
-        if ($word == "") continue; // Si le mot est vide, on passe au suivant
+        // On nettoie le mot
+        $word = trim($word); // On supprime les espaces en début et fin de chaîne
+        // On détecte l'encodage du mot
+        $word = mb_convert_encoding($word, 'UTF-8', mb_detect_encoding($word, ['UTF-8', 'ISO-8859-15', 'ISO-8859-1', 'ASCII'], true));
+        // On remplace les caractères spéciaux du type 'œ'
+        $word = str_replace('œ', 'oe', $word);
+        $word = str_replace('Œ', 'Oe', $word);
+        $word = str_replace('æ', 'ae', $word);
+        $word = str_replace('Æ', 'Ae', $word);
+        if ($word == '') continue; // Si le mot est vide, on passe au mot suivant (continue
 
         // vérification si le mot pas déjà présent en bdd
         try {
-            $sqlQuery = 'SELECT * FROM mot WHERE nom_mot = :nom_mot';
+            $sqlQuery = 'SELECT nom_mot FROM mot WHERE nom_mot = :nom_mot';
             $sqlStatement = $mysqlClient->prepare($sqlQuery);
             $sqlStatement->execute([
                 'nom_mot' => $word
