@@ -70,7 +70,7 @@ if (empty($_GET['id'])) {
 
 $result = "";
 
-// Si nouvelle partie
+// Si nouvelle partie, on précharge les données dans la session
 if (empty($_SESSION['PARTIE_ID']) || $_SESSION['PARTIE_ID'] != $_GET['id']) {
     try {
         $sqlQuery = 'SELECT * FROM partie, mot WHERE id_utilisateur_partie = :id_utilisateur_partie AND partie.id_partie = :id_partie AND partie.id_mot_partie = mot.id_mot';
@@ -94,7 +94,7 @@ if (empty($_SESSION['PARTIE_ID']) || $_SESSION['PARTIE_ID'] != $_GET['id']) {
     }
 
     $_SESSION['PARTIE_ID'] = $partie['id_partie'];
-    $_SESSION['PARTIE_MOT'] = sansAccents(strtoupper($partie['nom_mot']));
+    $_SESSION['PARTIE_MOT'] = strtoupper(sansAccents($partie['nom_mot']));
     $_SESSION['PARTIE_SCORE'] = 0;
     $_SESSION['PARTIE_LETTRE_TROUVE'] = array();
     $_SESSION['PARTIE_LETTRE_FAUX'] = array();
@@ -120,6 +120,43 @@ if (!empty($_POST['lettre']) && count($_SESSION['PARTIE_LETTRE_FAUX']) < 11) {
                 $_SESSION['PARTIE_LETTRE_FAUX'][] = $lettre;
                 $result .= 'La lettre ' . $lettre . ' n\'est pas dans le mot';
             }
+
+            // Si le mot est trouvé
+            $lettresMot = str_split($_SESSION['PARTIE_MOT']);
+            $lettresNonTrouve = array_diff(array_unique($lettresMot), $_SESSION['PARTIE_LETTRE_TROUVE']);
+
+            // Si toutes les lettres sont trouvées
+            if (empty($lettresNonTrouve)) {
+                $_SESSION['PARTIE_SCORE'] += 10 - count($_SESSION['PARTIE_LETTRE_FAUX']);
+                try {
+                    $sqlQuery = 'UPDATE partie SET score_partie = :score_partie, date_fin_partie = NOW() WHERE id_partie = :id_partie';
+                    $sqlStatement = $mysqlClient->prepare($sqlQuery);
+                    $sqlStatement->execute([
+                        'score_partie' => $_SESSION['PARTIE_SCORE'],
+                        'id_partie' => $_SESSION['PARTIE_ID']
+                    ]);
+                } catch (Exception $e) {
+                    $_SESSION['ERROR_MSG'] = 'Erreur lors de l\'éxécution de la requête SQL:</br>' . $e->getMessage();
+                    include_once('includes/error.php');
+                    exit();
+                }
+            }
+
+            // Si le nombre de fautes est atteint
+            if (count($_SESSION['PARTIE_LETTRE_FAUX']) >= 11) {
+                try {
+                    $sqlQuery = 'UPDATE partie SET score_partie = :score_partie, date_fin_partie = NOW() WHERE id_partie = :id_partie';
+                    $sqlStatement = $mysqlClient->prepare($sqlQuery);
+                    $sqlStatement->execute([
+                        'score_partie' => $_SESSION['PARTIE_SCORE'],
+                        'id_partie' => $_SESSION['PARTIE_ID']
+                    ]);
+                } catch (Exception $e) {
+                    $_SESSION['ERROR_MSG'] = 'Erreur lors de l\'éxécution de la requête SQL:</br>' . $e->getMessage();
+                    include_once('includes/error.php');
+                    exit();
+                }
+            }
         }
     } else {
         $result .= 'La lettre doit faire 1 caractère';
@@ -127,47 +164,15 @@ if (!empty($_POST['lettre']) && count($_SESSION['PARTIE_LETTRE_FAUX']) < 11) {
     $result .= '</br>';
 }
 
-// Si le mot est trouvé
-$lettresMot = str_split($_SESSION['PARTIE_MOT']);
-$lettresNonTrouve = array_diff(array_unique($lettresMot), $_SESSION['PARTIE_LETTRE_TROUVE']);
-
-// Si toutes les lettres sont trouvées
-if (empty($lettresNonTrouve)) {
-    $result .= 'Vous avez trouvé le mot !';
-    $_SESSION['PARTIE_SCORE'] += 10 - count($_SESSION['PARTIE_LETTRE_FAUX']);
-    try {
-        $sqlQuery = 'UPDATE partie SET score_partie = :score_partie, date_fin_partie = NOW() WHERE id_partie = :id_partie';
-        $sqlStatement = $mysqlClient->prepare($sqlQuery);
-        $sqlStatement->execute([
-            'score_partie' => $_SESSION['PARTIE_SCORE'],
-            'id_partie' => $_SESSION['PARTIE_ID']
-        ]);
-    } catch (Exception $e) {
-        $_SESSION['ERROR_MSG'] = 'Erreur lors de l\'éxécution de la requête SQL:</br>' . $e->getMessage();
-        include_once('includes/error.php');
-        exit();
-    }
-}
-
-// Si le nombre de fautes est atteint
-if (count($_SESSION['PARTIE_LETTRE_FAUX']) >= 11) {
+if (empty($_SESSION['PARTIE_LETTRE_TROUVE'])) {
+    $result .= 'Vous avez gagné !';
+} elseif (count($_SESSION['PARTIE_LETTRE_FAUX']) >= 11) {
     $result .= 'Vous avez perdu !';
-    try {
-        $sqlQuery = 'UPDATE partie SET score_partie = :score_partie, date_fin_partie = NOW() WHERE id_partie = :id_partie';
-        $sqlStatement = $mysqlClient->prepare($sqlQuery);
-        $sqlStatement->execute([
-            'score_partie' => $_SESSION['PARTIE_SCORE'],
-            'id_partie' => $_SESSION['PARTIE_ID']
-        ]);
-    } catch (Exception $e) {
-        $_SESSION['ERROR_MSG'] = 'Erreur lors de l\'éxécution de la requête SQL:</br>' . $e->getMessage();
-        include_once('includes/error.php');
-        exit();
-    }
+    $result .= '</br>Le mot était : ' . $_SESSION['PARTIE_MOT'];
 }
 
 $strMot = '';
-foreach ($lettresMot as $lettre) {
+foreach (str_split($_SESSION['PARTIE_MOT']) as $lettre) {
     if (in_array($lettre, $_SESSION['PARTIE_LETTRE_TROUVE'])) {
         $strMot .= $lettre;
     } else {
@@ -198,7 +203,7 @@ foreach ($lettresMot as $lettre) {
             <p>Lettres trouvées : <?php echo implode(', ', $_SESSION['PARTIE_LETTRE_TROUVE']); ?></p>
             <p>Lettres fausses : <?php echo implode(', ', $_SESSION['PARTIE_LETTRE_FAUX']); ?></p>
             <form action="" method="POST">
-                <input type="text" name="lettre" minlength="1" maxlength="1" placeholder="Lettre" autocomplete="off">
+                <input type="text" name="lettre" minlength="1" maxlength="1" placeholder="Lettre" autocomplete="off" autofocus>
                 <input type="submit" value="Envoyer">
             </form>
         </div>
