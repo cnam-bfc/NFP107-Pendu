@@ -25,12 +25,12 @@ body {
     align-items: center;
     justify-content: center;
     margin: auto;
-    /* border: 2px solid rgb(26, 25, 25);
+    border: 2px solid rgb(26, 25, 25);
     min-width: 300px;
     min-height: 300px;
     padding: 5px 30px 5px 30px;
     background: white;
-    border-radius: 5px; */
+    border-radius: 5px;
 }
 
 footer {
