@@ -42,7 +42,7 @@ if (isset($_FILES['fileToUpload']) && !empty($_FILES['fileToUpload'])) {
         // vérification si le mot pas déjà présent en bdd
         try {
             $sqlQuery = 'SELECT nom_mot FROM mot WHERE nom_mot = :nom_mot';
-            $sqlStatement = $mysqlClient->prepare($sqlQuery);
+            $sqlStatement = $pdo->prepare($sqlQuery);
             $sqlStatement->execute([
                 'nom_mot' => $word
             ]);
@@ -77,7 +77,7 @@ if (isset($_FILES['fileToUpload']) && !empty($_FILES['fileToUpload'])) {
         // Insertion du mot en bdd
         try {
             $sqlQuery = 'INSERT INTO mot (nom_mot, longueur_mot, nombre_voyelle, nombre_caracteres_speciaux) VALUES (:nom_mot, :nb_lettres, :nb_voyelles, :nb_caracteres_speciaux)';
-            $sqlStatement = $mysqlClient->prepare($sqlQuery);
+            $sqlStatement = $pdo->prepare($sqlQuery);
             $sqlStatement->execute([
                 'nom_mot' => $word,
                 'nb_lettres' => $nbLettres,

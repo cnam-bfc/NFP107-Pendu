@@ -74,7 +74,7 @@ $result = "";
 if (empty($_SESSION['PARTIE_ID']) || $_SESSION['PARTIE_ID'] != $_GET['id']) {
     try {
         $sqlQuery = 'SELECT * FROM partie, mot WHERE id_utilisateur_partie = :id_utilisateur_partie AND partie.id_partie = :id_partie AND partie.id_mot_partie = mot.id_mot';
-        $sqlStatement = $mysqlClient->prepare($sqlQuery);
+        $sqlStatement = $pdo->prepare($sqlQuery);
         $sqlStatement->execute([
             'id_utilisateur_partie' => $_SESSION['USER_ID'],
             'id_partie' => $_GET['id']
@@ -129,8 +129,8 @@ if (!empty($_POST['lettre']) && count($_SESSION['PARTIE_LETTRE_FAUX']) < 11) {
             if (empty($lettresNonTrouve)) {
                 $_SESSION['PARTIE_SCORE'] += 10 - count($_SESSION['PARTIE_LETTRE_FAUX']);
                 try {
-                    $sqlQuery = 'UPDATE partie SET score_partie = :score_partie, date_fin_partie = NOW() WHERE id_partie = :id_partie';
-                    $sqlStatement = $mysqlClient->prepare($sqlQuery);
+                    $sqlQuery = 'UPDATE partie SET score_partie = :score_partie, date_fin_partie = current_timestamp WHERE id_partie = :id_partie';
+                    $sqlStatement = $pdo->prepare($sqlQuery);
                     $sqlStatement->execute([
                         'score_partie' => $_SESSION['PARTIE_SCORE'],
                         'id_partie' => $_SESSION['PARTIE_ID']
@@ -145,8 +145,8 @@ if (!empty($_POST['lettre']) && count($_SESSION['PARTIE_LETTRE_FAUX']) < 11) {
             // Si le nombre de fautes est atteint
             if (count($_SESSION['PARTIE_LETTRE_FAUX']) >= 11) {
                 try {
-                    $sqlQuery = 'UPDATE partie SET score_partie = :score_partie, date_fin_partie = NOW() WHERE id_partie = :id_partie';
-                    $sqlStatement = $mysqlClient->prepare($sqlQuery);
+                    $sqlQuery = 'UPDATE partie SET score_partie = :score_partie, date_fin_partie = current_timestamp WHERE id_partie = :id_partie';
+                    $sqlStatement = $pdo->prepare($sqlQuery);
                     $sqlStatement->execute([
                         'score_partie' => $_SESSION['PARTIE_SCORE'],
                         'id_partie' => $_SESSION['PARTIE_ID']
@@ -164,7 +164,9 @@ if (!empty($_POST['lettre']) && count($_SESSION['PARTIE_LETTRE_FAUX']) < 11) {
     $result .= '</br>';
 }
 
-if (empty($_SESSION['PARTIE_LETTRE_TROUVE'])) {
+$lettresMot = str_split($_SESSION['PARTIE_MOT']);
+$lettresNonTrouve = array_diff(array_unique($lettresMot), $_SESSION['PARTIE_LETTRE_TROUVE']);
+if (empty($lettresNonTrouve)) {
     $result .= 'Vous avez gagné !';
 } elseif (count($_SESSION['PARTIE_LETTRE_FAUX']) >= 11) {
     $result .= 'Vous avez perdu !';
@@ -200,8 +202,11 @@ foreach (str_split($_SESSION['PARTIE_MOT']) as $lettre) {
             <p>Mot : <?php echo $strMot; ?></p>
             <p><?php echo $result; ?></p>
             <p>Score : <?php echo $_SESSION['PARTIE_SCORE']; ?></p>
-            <p>Lettres trouvées : <?php echo implode(', ', $_SESSION['PARTIE_LETTRE_TROUVE']); ?></p>
-            <p>Lettres fausses : <?php echo implode(', ', $_SESSION['PARTIE_LETTRE_FAUX']); ?></p>
+            <p>
+                Lettres trouvées : <?php echo implode(', ', $_SESSION['PARTIE_LETTRE_TROUVE']); ?>
+                <br />
+                Lettres fausses : <?php echo implode(', ', $_SESSION['PARTIE_LETTRE_FAUX']); ?>
+            </p>
             <form action="" method="POST">
                 <input type="text" name="lettre" minlength="1" maxlength="1" placeholder="Lettre" autocomplete="off" autofocus>
                 <input type="submit" value="Envoyer">

@@ -30,7 +30,7 @@ if (isset($_POST['difficulte']) && !empty($_POST['difficulte'])) {
         // Select mot dans la base de donnée avec nb lettre = $nbLettre
         try {
             $sqlQuery = 'SELECT * FROM mot WHERE longueur_mot = :nbLettre';
-            $sqlStatement = $mysqlClient->prepare($sqlQuery);
+            $sqlStatement = $pdo->prepare($sqlQuery);
             $sqlStatement->execute([
                 'nbLettre' => $nbLettre
             ]);
@@ -49,7 +49,7 @@ if (isset($_POST['difficulte']) && !empty($_POST['difficulte'])) {
         // select mot dans la base de donnée avec nb lettre > 7
         try {
             $sqlQuery = 'SELECT * FROM mot WHERE longueur_mot > 7';
-            $sqlStatement = $mysqlClient->prepare($sqlQuery);
+            $sqlStatement = $pdo->prepare($sqlQuery);
             $sqlStatement->execute();
             $tabMot = $sqlStatement->fetchAll();
             if (count($tabMot) == 0) {
@@ -69,9 +69,10 @@ if (isset($_POST['difficulte']) && !empty($_POST['difficulte'])) {
 
     //création de la partie
     try {
-        $sqlQuery = 'INSERT INTO partie (date_depart_partie, id_utilisateur_partie, id_mot_partie) VALUES (NOW(), :id_utilisateur_partie, :id_mot_partie)';
-        $sqlStatement = $mysqlClient->prepare($sqlQuery);
+        $sqlQuery = 'INSERT INTO partie (score_partie, date_depart_partie, id_utilisateur_partie, id_mot_partie) VALUES (:score_partie, current_timestamp, :id_utilisateur_partie, :id_mot_partie)';
+        $sqlStatement = $pdo->prepare($sqlQuery);
         $sqlStatement->execute([
+            'score_partie' => 0,
             'id_utilisateur_partie' => $_SESSION['USER_ID'],
             'id_mot_partie' => $mot['id_mot']
         ]);
@@ -82,7 +83,18 @@ if (isset($_POST['difficulte']) && !empty($_POST['difficulte'])) {
     }
 
     // envoie sur la page partie.php avec l'id de la partie
-    $partieNewId = $mysqlClient->lastInsertId();
+    // $partieNewId = $pdo->lastInsertId();
+    // Récupération de l'id de la partie
+    try {
+        $sqlQuery = 'SELECT MAX(id_partie) FROM partie';
+        $sqlStatement = $pdo->prepare($sqlQuery);
+        $sqlStatement->execute();
+        $partieNewId = $sqlStatement->fetch()[0];
+    } catch (Exception $e) {
+        $_SESSION['ERROR_MSG'] = 'Erreur lors de l\'éxécution de la requête SQL:</br>' . $e->getMessage();
+        include_once('includes/error.php');
+        exit();
+    }
     $_SESSION['REDIRECT_URL'] = 'partie.php?id=' . $partieNewId;
     include_once('includes/redirect.php');
     exit();
@@ -102,7 +114,7 @@ if (isset($_POST['difficulte']) && !empty($_POST['difficulte'])) {
     </header>
     <div class="main_div">
         <div class="center_div">
-            <form action="" method="post" id ="test">
+            <form action="" method="post" id="test">
                 <!-- Choix difficulté facile/normale/difficile/extrême -->
                 <div id="radio_difficulte">
                     <div class="choix_radio">

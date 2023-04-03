@@ -38,7 +38,7 @@ if (count($_POST) != 0) {
     // On vérifie si il existe déjà un utilisateur avec ce login
     try {
         $sqlQuery = 'SELECT login_utilisateur FROM utilisateur WHERE login_utilisateur = :login';
-        $sqlStatement = $mysqlClient->prepare($sqlQuery);
+        $sqlStatement = $pdo->prepare($sqlQuery);
         $sqlStatement->execute([
             'login' => $login
         ]);
@@ -57,7 +57,7 @@ if (count($_POST) != 0) {
     // On vérifie si il existe déjà un utilisateur avec cet email
     try {
         $sqlQuery = 'SELECT email_utilisateur FROM utilisateur WHERE email_utilisateur = :email';
-        $sqlStatement = $mysqlClient->prepare($sqlQuery);
+        $sqlStatement = $pdo->prepare($sqlQuery);
         $sqlStatement->execute([
             'email' => $email
         ]);
@@ -76,7 +76,7 @@ if (count($_POST) != 0) {
     // Tout est OK on ajoute l'utilisateur
     try {
         $sqlQuery = 'INSERT INTO utilisateur (email_utilisateur, login_utilisateur, password_utilisateur, prenom_utilisateur, nom_utilisateur) VALUES (:email, :login, :password, :prenom, :nom)';
-        $sqlStatement = $mysqlClient->prepare($sqlQuery);
+        $sqlStatement = $pdo->prepare($sqlQuery);
         $sqlStatement->execute([
             'email' => $email,
             'login' => $login,
@@ -93,10 +93,10 @@ if (count($_POST) != 0) {
     // On login l'utilisateur
     // On récupère l'utilisateur dans la base de données
     try {
-        $sqlQuery = 'SELECT * FROM utilisateur WHERE login_utilisateur = :identifiant OR email_utilisateur = :identifiant';
-        $sqlStatement = $mysqlClient->prepare($sqlQuery);
+        $sqlQuery = 'SELECT * FROM utilisateur WHERE login_utilisateur = :identifiant';
+        $sqlStatement = $pdo->prepare($sqlQuery);
         $sqlStatement->execute([
-            'identifiant' => $identifiant
+            'identifiant' => $login
         ]);
         $utilisateurs = $sqlStatement->fetchAll();
     } catch (Exception $e) {

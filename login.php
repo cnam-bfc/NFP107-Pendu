@@ -22,10 +22,11 @@ if (count($_POST) != 0) {
 
     // On récupère l'utilisateur dans la base de données
     try {
-        $sqlQuery = 'SELECT * FROM utilisateur WHERE login_utilisateur = :identifiant OR email_utilisateur = :identifiant';
-        $sqlStatement = $mysqlClient->prepare($sqlQuery);
+        $sqlQuery = 'SELECT * FROM utilisateur WHERE login_utilisateur = :login_utilisateur OR email_utilisateur = :email_utilisateur';
+        $sqlStatement = $pdo->prepare($sqlQuery);
         $sqlStatement->execute([
-            'identifiant' => $identifiant
+            'login_utilisateur' => $identifiant,
+            'email_utilisateur' => $identifiant
         ]);
         $utilisateurs = $sqlStatement->fetchAll();
     } catch (Exception $e) {
