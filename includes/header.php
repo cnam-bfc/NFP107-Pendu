@@ -16,7 +16,7 @@
                 <li><a href="register.php">Inscription</a></li>
             <?php else : ?>
                 <li><a href="partie_create.php">Jouer</a></li>
-                <?php if ($_SESSION['USER_LOGIN'] == 'totor' || $_SESSION['USER_LOGIN'] == 'Banban') : ?>
+                <?php if ($_SESSION['USER_LOGIN'] == 'admin') : ?>
                     <li><a href="import.php">Importer</a></li>
                 <?php endif; ?>
                 <li><a href="account.php"><?php echo htmlspecialchars($_SESSION['USER_PRENOM']) . ' ' . htmlspecialchars($_SESSION['USER_NOM']); ?></a></li>

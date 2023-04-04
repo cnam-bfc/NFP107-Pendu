@@ -1,7 +1,7 @@
 <?php include_once('includes/init.php'); ?>
 
 <?php
-if (!isset($_SESSION['USER_LOGGED']) || ($_SESSION['USER_LOGIN'] != 'totor' && $_SESSION['USER_LOGIN'] != 'Banban')) {
+if (!isset($_SESSION['USER_LOGGED']) || ($_SESSION['USER_LOGIN'] != 'admin')) {
     include_once('includes/redirect_backward.php');
     exit();
 }
