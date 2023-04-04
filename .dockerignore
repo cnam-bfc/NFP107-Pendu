@@ -1,0 +1,9 @@
+.git
+dev.Dockerfile
+Dockerfile
+.vscode
+CREATE DEFAULT FIREBIRD.sql
+CREATE DEFAULT MARIADB.sql
+gource-nvenc.sh
+gource-nvenc.bat
+.github
