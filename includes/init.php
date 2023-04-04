@@ -40,6 +40,7 @@ switch (DATABASE_TYPE) {
             include_once('includes/error.php');
         }
         break;
+
     default:
         $_SESSION['ERROR_MSG'] = 'Erreur de connexion à la base de données:</br>Type de base de données inconnu';
         include_once('includes/error.php');
