@@ -26,6 +26,17 @@ if (isset($_FILES['fileToUpload']) && !empty($_FILES['fileToUpload'])) {
 
     $result = "";
 
+    try {
+        // On démarre la transaction
+        $pdo->beginTransaction();
+
+        $startTime = microtime(true);
+    } catch (PDOException $e) {
+        $_SESSION['ERROR_MSG'] = 'Erreur lors de l\'éxécution de la requête SQL:</br>' . $e->getMessage();
+        include_once('includes/error.php');
+        exit();
+    }
+
     while (!feof($file)) { // Tant qu'on est pas à la fin du fichier
         $word = fgets($file); // On lit la ligne courante qui représente un mot
         // On nettoie le mot
@@ -52,6 +63,12 @@ if (isset($_FILES['fileToUpload']) && !empty($_FILES['fileToUpload'])) {
                 continue;
             }
         } catch (Exception $e) {
+            try {
+                // Annulation de la transaction
+                $pdo->rollBack();
+            } catch (PDOException $e) {
+            }
+
             $_SESSION['ERROR_MSG'] = 'Erreur lors de l\'éxécution de la requête SQL:</br>' . $e->getMessage();
             include_once('includes/error.php');
             exit();
@@ -85,13 +102,33 @@ if (isset($_FILES['fileToUpload']) && !empty($_FILES['fileToUpload'])) {
                 'nb_caracteres_speciaux' => $nbCaracteresSpeciaux
             ]);
         } catch (Exception $e) {
+            try {
+                // Annulation de la transaction
+                $pdo->rollBack();
+            } catch (PDOException $e) {
+            }
+
             $_SESSION['ERROR_MSG'] = 'Erreur lors de l\'éxécution de la requête SQL:</br>' . $e->getMessage();
             include_once('includes/error.php');
             exit();
         }
     }
     fclose($file);
-    $result .= 'Importation réussie !';
+
+    try {
+        // On valide la transaction
+        $pdo->commit();
+
+        $endTime = microtime(true);
+
+        $result .= 'Temps d\'exécution : ' . ($endTime - $startTime) . ' secondes';
+    } catch (PDOException $e) {
+        $_SESSION['ERROR_MSG'] = 'Erreur lors de l\'éxécution de la requête SQL:</br>' . $e->getMessage();
+        include_once('includes/error.php');
+        exit();
+    }
+
+    $result .= '</br>Importation réussie !';
     if (count($tabErreur) > 0) {
         $result .= '</br>Les mots suivants n\'ont pas pu être insérés en bdd car ils y étaient déjà :</br>';
         foreach ($tabErreur as $mot) {
