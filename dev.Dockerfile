@@ -1,4 +1,4 @@
-FROM php:8.3.2-apache
+FROM php:8.3.3-apache
 
 # Install PDO MySQL driver (optional)
 RUN docker-php-ext-install pdo_mysql
